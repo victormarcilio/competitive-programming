@@ -10,6 +10,7 @@ int main()
     cin >> N;
     queue<string> names[20];
     string name;
+    
     while(N--)
     {
         cin >> name;
@@ -28,6 +29,7 @@ int main()
                 names[i].pop();
                 found = true;
             }
-        cout << '\n';
+        if(found)
+            cout << '\n';
     }
 }
