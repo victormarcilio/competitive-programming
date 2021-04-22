@@ -1,3 +1,17 @@
+template<typename T>
+T exp_mod(T base, T expo, T mod)
+{
+    T ans = 1;
+    while (expo)
+    {
+        if (expo & 1)
+            ans = ans * base % mod;
+        expo >>= 1;
+        base = base * base % mod;
+    }
+    return ans;
+}
+
 struct Primo {
     //Raiz do valor maximo no problema: Problema diz até 10^8, LIM deve ser 10^4
     static const int LIM = 10'007;
@@ -38,6 +52,54 @@ struct Primo {
         if (val > 1)
             ans[val] = 1;
         return ans;
+    }
+
+    static int different_divisors(const map<long long, int>& m)
+    {
+        int ans = 1;
+        for (const auto& it : m)
+            ans *= (it.second + 1);
+        return ans;
+    }
+    int different_divisors(long long val)
+    {
+        return different_divisors(decompose(val));
+    }
+
+    long long sum_of_divisors(const map<long long, int>& m)
+    {
+        long long ans = 1;
+        for (const auto& it : m)
+        {
+            long long current = 1;
+            for (int i = 0; i <= it.second; i++)
+                current *= it.first;
+            
+            ans *= (current - 1)/(it.first - 1);
+        }
+        return ans;
+    }
+    long long sum_of_divisors(long long val)
+    {
+        return sum_of_divisors(decompose(val));
+    }
+    
+    long long sum_of_divisors_mod_K(const map<long long, int>& m, long long K)
+    {
+        long long ans = 1;
+        for (const auto& it : m)
+        {
+            long long current = 1;
+            for (int i = 0; i <= it.second; i++)
+                current *= it.first;
+            
+            ans = (current - 1) / (it.first - 1) % K * ans % K;
+        }
+        return ans;
+    }
+    long long sum_of_divisors_mod_K(long long val, long long K)
+    {
+        return sum_of_divisors_mod_K(decompose(val), K);
     }
 };
 
@@ -90,3 +152,4 @@ struct UnionFind
         return get_group_number(x) == get_group_number(y);
     }
 };
+
