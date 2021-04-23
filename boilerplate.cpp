@@ -153,3 +153,55 @@ struct UnionFind
     }
 };
 
+struct WeightedGraph
+{
+    using ii = pair<int, int>;
+    using vi = vector<int>;
+    using vvii = vector<vector<pair<int, int>>>;
+    const int INF = 1'000'000'000;
+    vvii adjList;
+    int V;
+    unordered_map<int, vi> djikstra_cache;
+
+    void addEdge(int from, int to, int weight)
+    {
+		adjList[from].emplace_back(to, weight);
+    }
+    WeightedGraph(int N) : V{ N + 1}, adjList{N + 1} {}
+
+
+    int djikstra(int from, int to)
+    {
+        if (djikstra_cache.find(from) == djikstra_cache.end())
+            djikstra_cache[from] = djikstra(from);
+        return djikstra_cache[from][to];
+    }
+    vector<int> djikstra(int from)
+    {
+        vector<int> distances(V, INF);
+        vector<bool> processed(V);
+        distances[from] = 0;
+        priority_queue<pair<int, int>, vector<ii>, greater<ii>> pq;
+        pq.push({ 0, from });
+        while (!pq.empty())
+        {
+            auto [curr_dist, no] = pq.top();
+            pq.pop();
+            if (processed[no])
+                continue;
+            processed[no] = true;
+            for (auto [dest, edge_dist] : adjList[no])
+            {
+                int new_dist = curr_dist + edge_dist;
+                if (new_dist < distances[dest])
+                {
+                    //if (processed[dest])
+                    //    throw "Negative cycle!\n";
+                    distances[dest] = new_dist;
+                    pq.push({new_dist, dest});
+                }
+            }
+        }
+        return distances;
+    }
+};
