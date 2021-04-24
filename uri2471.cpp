@@ -18,8 +18,8 @@ int main()
             scanf("%d", &mtx[i][j]);
 
     int l1 = accumulate(begin(mtx[0]), end(mtx[0]), 0);
-    int l2 = accumulate(begin(mtx[0]), end(mtx[0]), 0);
-    int l3 = accumulate(begin(mtx[0]), end(mtx[0]), 0);
+    int l2 = accumulate(begin(mtx[1]), end(mtx[1]), 0);
+    int l3 = accumulate(begin(mtx[2]), end(mtx[2]), 0);
     int original;
     if (l1 == l2 || l1 == l3)
         original = l1;
